@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">VideoGameLibraryClass</string>
     <string name="add_game">Add Game</string>
+    <string name="due_date">Due Date</string>
+    <string name="game_title">Game Title</string>
+    <string name="game_genre">Game Genre</string>
+    <string name="yes">Yes</string>
+    <string name="you_sure">Are you sure you want to checkout this game?</string>
+    <string name="checkout_game">Checkout Game?</string>
+    <string name="no">No</string>
 </resources>

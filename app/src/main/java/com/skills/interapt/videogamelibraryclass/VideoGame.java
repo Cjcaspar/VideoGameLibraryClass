@@ -17,10 +17,10 @@ public class VideoGame {
     private Date date;
 
 
-    public VideoGame(String gameTitle, String gameGenre, Date date) {
+    public VideoGame(String gameTitle, String gameGenre) {
         this.gameTitle = gameTitle;
         this.gameGenre = gameGenre;
-        this.date = date;
+        //this.date = date;
     }
 
     public int getId() {

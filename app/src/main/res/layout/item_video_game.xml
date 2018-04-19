@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_row_layout"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="@color/green">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/item_title"
+        android:textSize="16sp"
+        android:text="@string/game_title"
+        android:fontFamily="sans-serif"
+        app:layout_constraintTop_toTopOf="@id/item_row_layout"
+        app:layout_constraintLeft_toLeftOf="@id/item_row_layout"
+        app:layout_constraintBottom_toBottomOf="@id/item_row_layout"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/item_date"
+        android:textSize="12sp"
+        android:text="@string/due_date"
+        android:fontFamily="sans-serif"
+        app:layout_constraintBottom_toTopOf="@id/item_row_layout"
+        app:layout_constraintRight_toRightOf="@id/item_row_layout"
+        android:paddingBottom="5dp"
+        android:paddingRight="5dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/item_genre"
+        android:textSize="16sp"
+        android:text="@string/game_genre"
+        android:fontFamily="sans-serif"
+        app:layout_constraintTop_toTopOf="@id/item_row_layout"
+        app:layout_constraintRight_toRightOf="@id/item_row_layout"
+        android:paddingBottom="5dp"
+        android:paddingRight="5dp"
+        />
+
+</android.support.constraint.ConstraintLayout>
