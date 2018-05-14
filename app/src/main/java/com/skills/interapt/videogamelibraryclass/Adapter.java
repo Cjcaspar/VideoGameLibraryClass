@@ -36,11 +36,17 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(position);
         holder.gameTitle.setOnClickListener(holder.onItemClick(videoGameList.get(position)));
+        holder.itemView.setOnLongClickListener(holder.onItemLongClick(videoGameList.get(position)));
     }
 
     @Override
     public int getItemCount() {
         return videoGameList.size();
+    }
+
+    public void updateList(List<VideoGame> videoGames) {
+        this.videoGameList = videoGames;
+        notifyDataSetChanged();
     }
 
 
@@ -66,7 +72,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
         }
 
-
         @Override
         public void onClick(View v) {
             //example of onclick method usage
@@ -81,6 +86,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(itemView.getContext(), gameTitle.getText(), Toast.LENGTH_SHORT).show();
+                }
+            };
+        }
+
+        public View.OnLongClickListener onItemLongClick(VideoGame videoGame) {
+            return new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return false;
                 }
             };
         }

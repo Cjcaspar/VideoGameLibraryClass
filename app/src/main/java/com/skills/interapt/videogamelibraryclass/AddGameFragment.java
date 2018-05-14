@@ -1,15 +1,18 @@
 package com.skills.interapt.videogamelibraryclass;
 
-import android.app.Fragment;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
 
-public class AddGameFragment extends Fragment{
+public class AddGameFragment extends Fragment {
+
+    private AddGameCallback addGameCallback;
 
     @Nullable
     @Override
@@ -25,5 +28,13 @@ public class AddGameFragment extends Fragment{
         AddGameFragment fragment = new AddGameFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public void attachParent(AddGameCallback addGameCallback) {
+        this.addGameCallback = addGameCallback;
+    }
+
+    public interface AddGameCallback {
+        void addGame();
     }
 }

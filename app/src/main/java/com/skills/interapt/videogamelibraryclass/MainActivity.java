@@ -1,6 +1,9 @@
 package com.skills.interapt.videogamelibraryclass;
 
 import android.app.AlertDialog;
+import android.arch.persistence.db.SupportSQLiteOpenHelper;
+import android.arch.persistence.room.DatabaseConfiguration;
+import android.arch.persistence.room.InvalidationTracker;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
@@ -21,15 +24,18 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements Adapter.AdapterCallback{
+public class MainActivity extends AppCompatActivity implements Adapter.AdapterCallback, VideoGameDao, AddGameFragment.AddGameCallback {
 
     private RecyclerView recyclerView;
     private List<VideoGame> videoGameList;
     private Adapter adapter;
+    public VideoGameDatabase videoGameDatabase;
+    private AddGameFragment addGameFragment;
 
     @BindView(R.id.add_game_button)
-    private Button addGameButton;
+    protected Button addGameButton;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -37,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.AdapterCa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        videoGameDatabase = VideoGameDatabase.getDatabase(this);
         recyclerView = findViewById(R.id.games_recycler_view);
         videoGameList = new ArrayList<>();
 
@@ -73,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.AdapterCa
     }
 
     public void rowClicked(VideoGame videoGame) {
-        videoGame.isCheckedOut() ? checkGameBackIn(videoGame) : checkGameOut(videoGame);
+//        videoGame.isCheckedOut() ? checkGameBackIn(videoGame) : checkGameOut(videoGame);
     }
 
     public void checkGameBackIn(final VideoGame videoGame) {
@@ -99,9 +106,9 @@ public class MainActivity extends AppCompatActivity implements Adapter.AdapterCa
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 videoGame.setCheckedOut(true);
-                videoGameDatabase.videoGamedao.updateVideoGame(videoGame);
-                VideoGameAdapter.updateList(videoGameDatabase.videoGameDao().getVideoGames());
-                Toast.makeText(videoGame.getGameTitle(), )
+                videoGameDatabase.videoGameDao().updateVideoGame(videoGame);
+                adapter.updateList(videoGameDatabase.videoGameDao().getVideoGames());
+                //Toast.makeText(videoGame.getGameTitle(), );
             }
         }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
             @Override
@@ -110,9 +117,62 @@ public class MainActivity extends AppCompatActivity implements Adapter.AdapterCa
             }
         });
         videoGameDatabase.videoGameDao().updateVideoGame(videoGame);
-        adapter.updateList(videoGame.videoGameDao().getVideoGames());
+        adapter.updateList(videoGameDatabase.videoGameDao().getVideoGames());
     }
 
+    private void rowLongClicked(final VideoGame videoGame) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Game?").setMessage("Are you sure you want to delete this game?").setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                videoGameList.remove(videoGame);
 
+            }
+        }).setNegativeButton("no", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
+            }
+        }).setIcon(android.R.drawable.ic_dialog_alert).show();
+    }
+
+    @Override
+    public List<VideoGame> getVideoGames() {
+        return videoGameDatabase.videoGameDao().getVideoGames();
+    }
+
+    @Override
+    public void addVideoGame(VideoGame videoGame) {
+        videoGameDatabase.videoGameDao().addVideoGame(videoGame);
+    }
+
+    @Override
+    public void updateVideoGame(VideoGame videoGame) {
+        videoGameDatabase.videoGameDao().updateVideoGame(videoGame);
+    }
+
+    @Override
+    public void deleteVideoGame(VideoGame videoGame) {
+        videoGameDatabase.videoGameDao().deleteVideoGame(videoGame);
+    }
+
+    @Override
+    public void addGame(VideoGame videoGame) {
+        //logic
+    }
+
+    @OnClick(R.id.add_game_button)
+    protected void addGameClicked() {
+        addGameFragment = AddGameFragment.newInstance();
+        addGameFragment.attachParent(this);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, addGameFragment).commit();
+    }
+
+    @Override
+    public void addGame() {
+        
+    }
 }
+
+
+
